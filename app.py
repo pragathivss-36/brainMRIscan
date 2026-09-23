@@ -19,7 +19,7 @@ try:
     model = tf.keras.models.load_model(
     MODEL_PATH,
     compile=False
-	)
+    )
     print("[*] Model loaded successfully!")
 except Exception as e:
     print(f"[!] Error loading model: {e}")
@@ -83,7 +83,7 @@ def predict():
 
         # Run prediction through PM (1).keras
         predictions = model(imag_array, training=False).numpy()
-	raw_probs = predictions[0]
+        raw_probs = predictions[0]
 
         # Extract top class and probabilities
         class_index = int(np.argmax(raw_probs))
