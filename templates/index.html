@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-Assisted Brain MRI Classification for Alzheimer's Disease Prediction using TensorFlow Deep Learning.">
+    <title>Alzheimer's Disease Prediction Using Brain MRI</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="navbar-header">
+        <div class="nav-container">
+            <a href="#home" class="brand-logo">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-brain">
+                        <span class="pulse-ring"></span>
+                    </i>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-title">NeuroScan <span class="highlight">AI</span></span>
+                    <span class="logo-sub">Alzheimer's MRI Classifier</span>
+                </div>
+            </a>
+
+            <nav class="nav-links" id="nav-links">
+                <a href="#home" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="#predict" class="nav-link"><i class="fa-solid fa-microscope"></i> Prediction</a>
+                <a href="#about" class="nav-link"><i class="fa-solid fa-circle-info"></i> About Model</a>
+                <a href="#how-it-works" class="nav-link"><i class="fa-solid fa-diagram-project"></i> How It Works</a>
+                <a href="#contact" class="nav-link"><i class="fa-solid fa-user-doctor"></i> Contact</a>
+            </nav>
+
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="hero-bg-glow"></div>
+            <div class="hero-container">
+                <div class="hero-badge">
+                    <i class="fa-solid fa-shield-halved"></i> Deep Learning Medical AI Project
+                </div>
+                <h1 class="hero-title">
+                    Alzheimer's Disease Prediction <br>
+                    <span class="gradient-text">Using Brain MRI Scans</span>
+                </h1>
+                <p class="hero-subtitle">
+                    AI-Assisted Brain MRI Classification Using Deep Learning & TensorFlow. High-precision 4-stage neuro-image evaluation for healthcare research.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#predict" class="btn btn-primary btn-lg glow-effect">
+                        <i class="fa-solid fa-circle-play"></i> Start Prediction
+                    </a>
+                    <a href="#how-it-works" class="btn btn-outline btn-lg">
+                        <i class="fa-solid fa-circle-nodes"></i> How It Works
+                    </a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <i class="fa-solid fa-cubes-stacked"></i>
+                        <div>
+                            <h4>4 Severity Classes</h4>
+                            <p>Mild, Moderate, Non & Very Mild</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fa-solid fa-bolt"></i>
+                        <div>
+                            <h4>TensorFlow / Keras</h4>
+                            <p>Powered by PM (1).keras</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fa-solid fa-image"></i>
+                        <div>
+                            <h4>224×224 Resolution</h4>
+                            <p>Optimized Preprocessing</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medical Disclaimer -->
+                <div class="disclaimer-banner">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span><strong>Disclaimer:</strong> This application is intended strictly for educational and research purposes and is not a substitute for professional medical diagnosis or clinical advice.</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Prediction Section -->
+        <section id="predict" class="prediction-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-badge"><i class="fa-solid fa-upload"></i> MRI Analysis</span>
+                    <h2>Brain MRI Image Classification</h2>
+                    <p>Upload a brain MRI scan image (JPG, JPEG, or PNG) to analyze with the trained deep learning model.</p>
+                </div>
+
+                <div class="prediction-card">
+                    <!-- Step Indicator -->
+                    <div class="upload-step-indicator">
+                        <div class="step-badge active" id="step-1-badge">1. Upload Image</div>
+                        <div class="step-line"></div>
+                        <div class="step-badge" id="step-2-badge">2. Model Analysis</div>
+                        <div class="step-line"></div>
+                        <div class="step-badge" id="step-3-badge">3. Result Output</div>
+                    </div>
+
+                    <!-- Dropzone -->
+                    <div class="upload-area" id="upload-dropzone">
+                        <input type="file" id="mri-file-input" accept="image/png, image/jpeg, image/jpg" hidden>
+                        <div class="upload-content" id="upload-prompt">
+                            <div class="upload-icon-wrapper">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                            </div>
+                            <h3>Drag & Drop Brain MRI Scan Here</h3>
+                            <p>or click to browse your computer</p>
+                            <span class="file-limits">Supported Formats: JPG, JPEG, PNG (Max 16MB)</span>
+                        </div>
+
+                        <!-- Image Preview Box -->
+                        <div class="preview-box hidden" id="preview-container">
+                            <div class="image-wrapper">
+                                <img id="image-preview" src="" alt="MRI Scan Preview">
+                                <div class="scan-line"></div>
+                            </div>
+                            <div class="preview-info">
+                                <span id="file-name" class="file-title">filename.jpg</span>
+                                <span id="file-size" class="file-meta">0 KB</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Error Alert -->
+                    <div class="error-alert hidden" id="error-alert">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span id="error-message">Please select a valid image file.</span>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-bar hidden" id="action-bar">
+                        <button class="btn btn-secondary" id="reset-btn">
+                            <i class="fa-solid fa-rotate-left"></i> Change Image
+                        </button>
+                        <button class="btn btn-primary glow-effect" id="predict-btn">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Predict MRI Scan
+                        </button>
+                    </div>
+
+                    <!-- Loading Overlay State -->
+                    <div class="loading-state hidden" id="loading-state">
+                        <div class="spinner-container">
+                            <div class="radar-spinner"></div>
+                            <i class="fa-solid fa-brain spinner-icon"></i>
+                        </div>
+                        <h3>Analyzing MRI Scan...</h3>
+                        <p>Running tensor matrix through <code>PM (1).keras</code> model...</p>
+                        <div class="progress-bar-indeterminate">
+                            <div class="indeterminate-fill"></div>
+                        </div>
+                    </div>
+
+                    <!-- Prediction Result Card -->
+                    <div class="result-container hidden" id="result-container">
+                        <div class="result-header">
+                            <div class="result-title-group">
+                                <span class="result-tag">AI Prediction Result</span>
+                                <h3 id="result-class-name">Very Mild Demented</h3>
+                            </div>
+                            <div class="confidence-badge" id="top-confidence-badge">
+                                <span class="confidence-label">Confidence</span>
+                                <span class="confidence-value" id="result-confidence-val">87.42%</span>
+                            </div>
+                        </div>
+
+                        <!-- Main Progress Indicator -->
+                        <div class="confidence-bar-wrapper">
+                            <div class="bar-header">
+                                <span>Model Certainty</span>
+                                <span id="confidence-percentage-label">87.42%</span>
+                            </div>
+                            <div class="main-progress-track">
+                                <div class="main-progress-fill" id="main-progress-fill" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Class Probabilities Breakdown Grid -->
+                        <div class="probabilities-section">
+                            <h4><i class="fa-solid fa-chart-simple"></i> Class Probability Distribution</h4>
+                            <div class="prob-grid" id="prob-grid">
+                                <!-- Dynamically populated by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Clinical Guidance Summary -->
+                        <div class="clinical-summary" id="clinical-summary">
+                            <i class="fa-solid fa-circle-info"></i>
+                            <div id="clinical-summary-text">
+                                The model has processed the MRI image inputs. Below is the comparative likelihood distribution across all trained categories.
+                            </div>
+                        </div>
+
+                        <div class="result-actions">
+                            <button class="btn btn-primary" id="new-prediction-btn">
+                                <i class="fa-solid fa-plus-circle"></i> Analyze Another MRI Scan
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- About Model Section -->
+        <section id="about" class="about-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-badge"><i class="fa-solid fa-layer-group"></i> Architecture</span>
+                    <h2>About the AI Model</h2>
+                    <p>Technical details of the deep learning architecture behind <code>PM (1).keras</code>.</p>
+                </div>
+
+                <div class="architecture-grid">
+                    <div class="arch-card">
+                        <div class="arch-icon"><i class="fa-solid fa-network-wired"></i></div>
+                        <h3>Model Architecture</h3>
+                        <p>Sequential 4-Block Convolutional Neural Network (CNN) engineered specifically for spatial feature extraction in brain MRI slices.</p>
+                    </div>
+
+                    <div class="arch-card">
+                        <div class="arch-icon"><i class="fa-solid fa-down-left-and-up-right-to-center"></i></div>
+                        <h3>Input Preprocessing</h3>
+                        <p>Accepts <strong>224 × 224 × 3</strong> RGB image tensors with built-in feature rescaling (1/255) for numerical stability.</p>
+                    </div>
+
+                    <div class="arch-card">
+                        <div class="arch-icon"><i class="fa-solid fa-sliders"></i></div>
+                        <h3>Parameter Count</h3>
+                        <p><strong>1,265,486 Total Parameters</strong> with 421,828 trainable weights optimized for deep neuro-feature detection.</p>
+                    </div>
+
+                    <div class="arch-card">
+                        <div class="arch-icon"><i class="fa-solid fa-list-check"></i></div>
+                        <h3>4 Output Classes</h3>
+                        <p>Calculates categorical Softmax probability distribution across: <em>Mild Demented, Moderate Demented, Non Demented,</em> and <em>Very Mild Demented</em>.</p>
+                    </div>
+                </div>
+
+                <!-- Layer Breakdown Box -->
+                <div class="layer-breakdown-box">
+                    <h3><i class="fa-solid fa-code-branch"></i> CNN Pipeline Overview</h3>
+                    <div class="pipeline-steps">
+                        <div class="p-step">
+                            <span class="p-num">01</span>
+                            <h4>Rescaling Layer</h4>
+                            <p>Normalizes raw RGB 0-255 pixels to [0, 1] range.</p>
+                        </div>
+                        <div class="p-step">
+                            <span class="p-num">02</span>
+                            <h4>Conv2D + MaxPool2D</h4>
+                            <p>4 feature extraction blocks with 32, 64, 128, and 256 filters.</p>
+                        </div>
+                        <div class="p-step">
+                            <span class="p-num">03</span>
+                            <h4>Global Average Pooling</h4>
+                            <p>Reduces spatial dimensions while preserving key spatial activations.</p>
+                        </div>
+                        <div class="p-step">
+                            <span class="p-num">04</span>
+                            <h4>Dense & Softmax Output</h4>
+                            <p>128-unit FC layer + Dropout (regularization) + 4-unit Softmax class classifier.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="how-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-badge"><i class="fa-solid fa-route"></i> Workflow</span>
+                    <h2>How It Works</h2>
+                    <p>A step-by-step overview of how your scan is processed from browser to model prediction.</p>
+                </div>
+
+                <div class="workflow-grid">
+                    <div class="workflow-card">
+                        <div class="wf-number">1</div>
+                        <div class="wf-icon"><i class="fa-solid fa-file-image"></i></div>
+                        <h3>Upload MRI Scan</h3>
+                        <p>User uploads a brain MRI slice image via the responsive drag-and-drop web frontend.</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <div class="wf-number">2</div>
+                        <div class="wf-icon"><i class="fa-solid fa-gear"></i></div>
+                        <h3>Backend Preprocessing</h3>
+                        <p>Flask receives the image payload and resizes it to target shape <code>(224, 224, 3)</code> matching <code>practice.py</code> training specs.</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <div class="wf-number">3</div>
+                        <div class="wf-icon"><i class="fa-solid fa-brain"></i></div>
+                        <h3>AI Model Inference</h3>
+                        <p>TensorFlow feeds the 4D tensor through <code>PM (1).keras</code> loaded into server memory for high-speed inference.</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <div class="wf-number">4</div>
+                        <div class="wf-icon"><i class="fa-solid fa-square-poll-vertical"></i></div>
+                        <h3>Result & Probability Chart</h3>
+                        <p>The server returns JSON probabilities to display the predicted class and full 4-category percentage distribution.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-badge"><i class="fa-solid fa-address-card"></i> Developer</span>
+                    <h2>Project Contact & Details</h2>
+                    <p>Final Year / Mini-Project Student Details</p>
+                </div>
+
+                <div class="contact-card-wrapper">
+                    <div class="contact-card">
+                        <div class="contact-avatar">
+                            <i class="fa-solid fa-user-graduate"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Pragathi VSS</h3>
+                            <p class="contact-dept"><i class="fa-solid fa-graduation-cap"></i> Department of Artificial Intelligence and Data Science</p>
+                            <p class="contact-email"><i class="fa-solid fa-envelope"></i> <a href="mailto:pragathivss36@gmail.com">pragathivss36@gmail.com</a></p>
+                            
+                            <div class="contact-pills">
+                                <span class="pill"><i class="fa-solid fa-code"></i> AI & Data Science</span>
+                                <span class="pill"><i class="fa-solid fa-microchip"></i> TensorFlow / Keras</span>
+                                <span class="pill"><i class="fa-solid fa-laptop-code"></i> Flask Web Application</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <p>&copy; 2026 <strong>Alzheimer's Disease Prediction Using Brain MRI</strong>. Developed by <strong>Pragathi VSS</strong>.</p>
+            <p class="footer-sub">Built with Python, Flask, HTML5, CSS3, JavaScript & TensorFlow.</p>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
