@@ -1,8 +1,16 @@
 import os
+
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["TF_NUM_INTRAOP_THREADS"] = "1"
+os.environ["TF_NUM_INTEROP_THREADS"] = "1"
+os.environ["OMP_NUM_THREADS"] = "1"
+
 import io
 import numpy as np
 import tensorflow as tf
+
+tf.config.threading.set_intra_op_parallelism_threads(1)
+tf.config.threading.set_inter_op_parallelism_threads(1)
 from flask import Flask, request, jsonify, render_template
 from werkzeug.utils import secure_filename
 from PIL import Image
