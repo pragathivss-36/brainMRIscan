@@ -1,4 +1,5 @@
 import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 import io
 import numpy as np
 import tensorflow as tf
@@ -15,7 +16,10 @@ MODEL_PATH = os.path.join(os.path.dirname(__file__), "PM (1).keras")
 print(f"[*] Loading model from: {MODEL_PATH}")
 
 try:
-    model = tf.keras.models.load_model(MODEL_PATH)
+    model = tf.keras.models.load_model(
+    MODEL_PATH,
+    compile=False
+	)
     print("[*] Model loaded successfully!")
 except Exception as e:
     print(f"[!] Error loading model: {e}")
@@ -78,8 +82,8 @@ def predict():
         imag_array = np.expand_dims(imag_array, axis=0)
 
         # Run prediction through PM (1).keras
-        predictions = model.predict(imag_array)
-        raw_probs = predictions[0]
+        predictions = model(imag_array, training=False).numpy()
+	raw_probs = predictions[0]
 
         # Extract top class and probabilities
         class_index = int(np.argmax(raw_probs))
@@ -117,4 +121,5 @@ def predict():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
